@@ -1,0 +1,41 @@
+function sendArchive() {
+  // Define source and destinetion folder, replace XXXXX with id
+  var src = DriveApp.getFolderById("XXXXX");
+  var dest = DriveApp.getFolderById("XXXXX");
+  
+  // copy all files to archive and send mail
+  var files = src.getFiles();
+  var cnt = 1;
+  while (files.hasNext()) {
+    var file = files.next();
+    file.makeCopy("COPY"+cnt+" "+file.getName(), dest);
+    //replace XXXXX with mail  and 
+    MailApp.sendEmail("XXXXX", "The mail subject goes here", "", {
+    attachments: [file.setName("Attachment name goes here")],
+    name: 'Automatic Emailer Script'
+    }
+    )
+    
+    cnt++;
+  }
+  MailApp.sendEmail("XXXXX", "OK", {
+    attachments: [file.setName("File name goes here")],
+    name: 'Automatic Emailer Script'
+    })
+
+}
+//replace XXXXX with id
+function deleteFiles() {
+  var src = DriveApp.getFolderById("XXXXX");
+  var files = src.getFiles();
+  while (files.hasNext()) {
+    var file = files.next();
+    file.setTrashed(true);
+  }
+  // notify that the SRC folder is empty, replace XXXXX with email
+  MailApp.sendEmail("XXXXX", "OK, mailes are deleted", {
+  attachments: [],
+  name: 'Automatic Emailer Script'
+})  
+
+}
