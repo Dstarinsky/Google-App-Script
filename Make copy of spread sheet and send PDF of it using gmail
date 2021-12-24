@@ -1,0 +1,28 @@
+function makeCopy() {
+
+// generates the timestamp and stores in variable formattedDate as year-month-date hour-minute-second
+var formattedDate = Utilities.formatDate(new Date(), "GMT", "yyyy-MM-dd' 'HH:mm:ss");
+
+// gets the name of the original file and appends the word "copy" followed by the timestamp stored in formattedDate
+var name = SpreadsheetApp.getActiveSpreadsheet().getName() + formattedDate;
+
+// gets the destination folder by their ID. REPLACE xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx with your folder's ID that you can get by opening the folder in Google Drive and checking the URL in the browser's address bar
+var destination = DriveApp.getFolderById("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+
+// gets the current Google Sheet file
+var file = DriveApp.getFileById(SpreadsheetApp.getActiveSpreadsheet().getId())
+
+// makes copy of "file" with "name" at the "destination"
+file.makeCopy(name, destination);
+}
+function sendReport() {
+  var formattedDate = Utilities.formatDate(new Date(), "GMT", "yyyy-MM-dd");
+  var message = {
+    to: "insert the destination mail here",
+    subject: "Email subject goes here" + formattedDate,
+    body: "Email body goes here " ,
+    name: "Name goes here",
+    attachments: [SpreadsheetApp.getActiveSpreadsheet().getAs(MimeType.PDF).setName("File name.pdf")]
+  }
+  MailApp.sendEmail(message);
+}
